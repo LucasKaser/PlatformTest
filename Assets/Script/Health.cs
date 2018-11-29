@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour {
     float yVelocity;
+    public int Lives = 10;
     public GameObject PauseMenu;
     public Slider HealthSlider;
     public Slider HealthSlider2;
@@ -19,6 +20,8 @@ public class Health : MonoBehaviour {
         HealthSlider.GetComponent<Slider>().value = health;
         HealthSlider2.GetComponent<Slider>().value = health;
         healthText.GetComponent<Text>().text = "Health: " + health;
+        // PlayerPrefs.SetInt("Lives", Lives);
+        Lives = PlayerPrefs.GetInt("Lives");
     }
     private void Update()
     {
@@ -35,7 +38,7 @@ public class Health : MonoBehaviour {
             healthText.GetComponent<Text>().text = "Health: " + health;
             HealthSlider.GetComponent<Slider>().value = health;
             HealthSlider2.GetComponent<Slider>().value = health;
-            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(20, 20));
+            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(300, 300));
         }
         if (collision.gameObject.tag == "Water")
         {
@@ -43,6 +46,11 @@ public class Health : MonoBehaviour {
         }
             if (health <= 0)
         {
+            if(Lives == 0)
+            {
+                SceneManager.LoadScene("Main Menu");
+            }
+            PlayerPrefs.SetInt("Lives", Lives - 1);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
